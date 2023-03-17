@@ -1,6 +1,7 @@
 
 import json
 
+
 class Question:
     def __init__(self, titre, choix, bonne_reponse):
         self.titre = titre
@@ -44,10 +45,24 @@ class Question:
         except:
             print("ERREUR : Veuillez rentrer uniquement des chiffres")
         return Question.demander_reponse_numerique_utlisateur(min, max)
-    
+
+
 class Questionnaire:
     def __init__(self, questions):
         self.questions = questions
+
+    def fromjsondata(questionnaire):
+        questions = questionnaire["questions"]
+        questions = [Question.fromjsondata(question) for question in questions]
+        print()
+        print("Catégorie :", questionnaire["categorie"])
+        print("Titre :", questionnaire["titre"])
+        print("Difficulté :", questionnaire["difficulte"])
+        print("Nb de questions : ", len(questions))
+        print()
+        
+        return questions
+
 
     def lancer(self):
         score = 0
@@ -57,6 +72,7 @@ class Questionnaire:
         print("Score final :", score, "sur", len(self.questions))
         return score
 
+
 def load_file(file):
     file = open(file, "r")
     data = file.read()
@@ -64,25 +80,6 @@ def load_file(file):
     return json.loads(data)
     
 
-""" def creer_questionnaire_formate(questionnaire):
-    question_formatee = []
-    questionnaire_formate = []
-    questions = questionnaire["questions"]
- """
-    
-    
-    
-questionnaire_jeu = ()
-
 questionnaire_json = load_file("animaux_leschats_confirme.json")
-questionnaire = questionnaire_json["questions"]
-# questionnaire = creer_questionnaire_formate(questionnaire)
-# categorie = questionnaire["categorie"]
-# titre = questionnaire["titre"]
-# difficulte = questionnaire["difficulte"]
 
-q = Question.fromjsondata(questionnaire[0])
-
-q.poser()
-
-# Questionnaire(questionnaire_jeu).lancer()
+Questionnaire(Questionnaire.fromjsondata(questionnaire_json)).lancer()
